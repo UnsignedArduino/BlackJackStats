@@ -1,0 +1,10 @@
+# Build products
+*.o
+build
+cmake-build-*
+main
+main.exe
+
+# IDEs
+.vscode
+.idea
