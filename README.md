@@ -23,7 +23,7 @@ Run `main.exe` in the `build` directory.
 
 ## Testing
 
-Run a `test_*.exe` in the `build` directory.
+Run a `test_*.exe` or `ctest` in the `build` directory.
 
 ### Writing tests
 
