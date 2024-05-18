@@ -2,7 +2,8 @@
 
 int main() {
   CardHand hand = CardHand();
-  hand.fillDeck();
+  hand.fillHandWithDeck();
+  hand.printHand();
 
   return 0;
 }

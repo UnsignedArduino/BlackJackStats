@@ -1,10 +1,18 @@
 #include "CardHand.h"
 
 CardHand::CardHand() {// NOLINT(*-pro-type-member-init)
-  this->clearDeck();
+  this->clearHand();
 }
 
-card_hand_action_result_t CardHand::fillDeck() {
+card_hand_action_result_t CardHand::clearHand() {
+  for (card_t &i: this->hand) {
+    i = CARD_NULL;
+  }
+  CARDHAND_DEBUG_PRINT("Hand cleared\n");
+  return CARD_ACTION_RESULT_SUCCESS;
+}
+
+card_hand_action_result_t CardHand::fillHandWithDeck() {
   for (const card_t &suit: CARD_SUITS) {
     for (const card_t &rank: CARD_RANKS) {
       this->addCardToBottom(suit | rank);
@@ -13,12 +21,14 @@ card_hand_action_result_t CardHand::fillDeck() {
   return CARD_ACTION_RESULT_SUCCESS;
 }
 
-card_hand_action_result_t CardHand::clearDeck() {
-  for (card_hand_index_t i = 0; i < CARDHAND_MAX_SIZE; i++) {// NOLINT(*-loop-convert)
-    this->hand[i] = CARD_NULL;
+card_hand_index_t CardHand::getHandSize() {
+  card_hand_index_t size = 0;
+  for (card_t i: this->hand) {
+    if (i != CARD_NULL) {
+      size++;
+    }
   }
-  CARDHAND_DEBUG_PRINT("Hand cleared\n");
-  return CARD_ACTION_RESULT_SUCCESS;
+  return size;
 }
 
 card_hand_action_result_t CardHand::addCardToTop(card_t card) {

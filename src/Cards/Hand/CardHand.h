@@ -5,7 +5,7 @@
 typedef int16_t card_hand_index_t;
 #endif//CARDHAND_MAX_SIZE
 
-#define CARDHAND_DEBUG 1
+//#define CARDHAND_DEBUG 1
 
 #ifndef CARDHAND_DEBUG
   #define CARDHAND_DEBUG 0
@@ -34,8 +34,10 @@ class CardHand {
     CardHand();
     ~CardHand() = default;
 
-    card_hand_action_result_t clearDeck();
-    card_hand_action_result_t fillDeck();
+    card_hand_action_result_t clearHand();
+    card_hand_action_result_t fillHandWithDeck();
+
+    card_hand_index_t getHandSize();
 
     card_hand_action_result_t addCardToTop(card_t card);
     card_hand_action_result_t addCardToBottom(card_t card);
