@@ -50,6 +50,58 @@ bool assert(bool condition, const char *test, uint32_t number);
     }                                                                                  \
     test_counter++;
 
+  #define TEST_ASSERT_LESS_THAN_INT(toRun, expected)                                 \
+    {                                                                                \
+      int32_t actual = toRun;                                                        \
+      if (!assert(actual < (expected), #toRun " < (" #expected ")", test_counter)) { \
+        printf("Expected less than: ");                                              \
+        printf(#expected);                                                           \
+        printf("\nGot: %d", actual);                                                 \
+        TEST_END_FAIL()                                                              \
+        return 1;                                                                    \
+      }                                                                              \
+    }                                                                                \
+    test_counter++;
+
+  #define TEST_ASSERT_LESS_THAN_OR_EQUAL_TO_INT(toRun, expected)                       \
+    {                                                                                  \
+      int32_t actual = toRun;                                                          \
+      if (!assert(actual <= (expected), #toRun " <= (" #expected ")", test_counter)) { \
+        printf("Expected less than or equal to: ");                                    \
+        printf(#expected);                                                             \
+        printf("\nGot: %d", actual);                                                   \
+        TEST_END_FAIL()                                                                \
+        return 1;                                                                      \
+      }                                                                                \
+    }                                                                                  \
+    test_counter++;
+
+  #define TEST_ASSERT_GREATER_THAN_INT(toRun, expected)                              \
+    {                                                                                \
+      int32_t actual = toRun;                                                        \
+      if (!assert(actual > (expected), #toRun " > (" #expected ")", test_counter)) { \
+        printf("Expected greater than: ");                                           \
+        printf(#expected);                                                           \
+        printf("\nGot: %d", actual);                                                 \
+        TEST_END_FAIL()                                                              \
+        return 1;                                                                    \
+      }                                                                              \
+    }                                                                                \
+    test_counter++;
+
+  #define TEST_ASSERT_GREATER_THAN_OR_EQUAL_TO_INT(toRun, expected)                    \
+    {                                                                                  \
+      int32_t actual = toRun;                                                          \
+      if (!assert(actual >= (expected), #toRun " >= (" #expected ")", test_counter)) { \
+        printf("Expected greater than or equal to: ");                                 \
+        printf(#expected);                                                             \
+        printf("\nGot: %d", actual);                                                   \
+        TEST_END_FAIL()                                                                \
+        return 1;                                                                      \
+      }                                                                                \
+    }                                                                                  \
+    test_counter++;
+
   #define TEST_ASSERT_EQUAL_TO_CARD(toRun, expected)                                   \
     {                                                                                  \
       card_t actual = toRun;                                                           \

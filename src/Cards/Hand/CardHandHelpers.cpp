@@ -67,3 +67,14 @@ void CardHand::printHand() {
   }
   printf("\n");
 }
+
+void CardHand::printAsArray() {
+  printf("{");
+  for (card_hand_index_t i = 0; i < CARDHAND_MAX_SIZE; i++) {
+    if (i != 0) {
+      printf(", ");
+    }
+    printf("0x%02x", this->hand[i]);
+  }
+  printf("}\n");
+}

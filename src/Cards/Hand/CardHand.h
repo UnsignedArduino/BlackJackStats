@@ -27,7 +27,8 @@ typedef uint8_t card_hand_action_result_t;
 
 const card_hand_action_result_t CARD_ACTION_RESULT_SUCCESS = 0;
 const card_hand_action_result_t CARD_ACTION_RESULT_HAND_FULL = 1;
-const card_hand_action_result_t CARD_ACTION_RESULT_HAND_INVALID_INDEX = 2;
+const card_hand_action_result_t CARD_ACTION_RESULT_HAND_EMPTY = 2;
+const card_hand_action_result_t CARD_ACTION_RESULT_HAND_INVALID_INDEX = 3;
 
 class CardHand {
   public:
@@ -36,6 +37,7 @@ class CardHand {
 
     card_hand_action_result_t clearHand();
     card_hand_action_result_t fillHandWithDeck();
+    card_hand_action_result_t shuffleHand(uint32_t seed);
 
     card_hand_index_t getHandSize();
 
@@ -52,10 +54,11 @@ class CardHand {
     card_t drawCard(card_hand_index_t index);
 
     void printHand();
+    void printAsArray();
 
-  private:
     card_t hand[CARDHAND_MAX_SIZE];
 
+  private:
     card_hand_action_result_t compactHandUp();
     card_hand_action_result_t compactHandDown();
 
