@@ -1,9 +1,9 @@
-CMAKE_MINIMUM_REQUIRED(VERSION 3.25)
+CMAKE_MINIMUM_REQUIRED(VERSION 3.24)
 PROJECT("BlackJackStats")
 
 SET(CMAKE_CXX_STANDARD 17)
 SET(CMAKE_CXX_STANDARD_REQUIRED True)
-SET(CMAKE_CXX_FLAGS "-static -static-libgcc -static-libstdc++")
+# SET(CMAKE_CXX_FLAGS "-static -static-libgcc -static-libstdc++")
 
 # Main executable
 FILE(GLOB_RECURSE sources CONFIGURE_DEPENDS "src/*.cpp")

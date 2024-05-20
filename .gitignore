@@ -6,5 +6,10 @@ main
 main.exe
 
 # IDEs
+## VS Code
 .vscode
+## Jetbrains IDEs
 .idea
+## Replit
+.ccls-cache
+.breakpoints
