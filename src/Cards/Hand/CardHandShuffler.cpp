@@ -1,12 +1,4 @@
 #include "CardHand.h"
-#include <random>
-
-#ifndef CARDHAND_SHUFFLE_RNG
-  #define CARDHAND_SHUFFLE_RNG std::mt19937
-//  #define CARDHAND_SHUFFLE_RNG std::minstd_rand  // 0.01 ms faster but less random
-#endif//CARDHAND_SHUFFLE_RNG
-
-typedef CARDHAND_SHUFFLE_RNG cardhand_shuffle_rng_t;
 
 card_hand_action_result_t CardHand::shuffleHand(uint32_t seed) {
   if (this->getHandSize() == 0) {

@@ -1,5 +1,7 @@
 # BlackJackStats
 
+[![CMake on multiple platforms](https://github.com/UnsignedArduino/BlackJackStats/actions/workflows/cmake-multi-platform.yml/badge.svg)](https://github.com/UnsignedArduino/BlackJackStats/actions/workflows/cmake-multi-platform.yml)
+
 Simulations for the gambling card game Blackjack.
 
 ## Install
@@ -10,7 +12,7 @@ The steps below assume Windows. You can also use the CMake GUI.
 2. Install CMake.
 3. Clone this repo.
 4. `mkdir build && cd build` in project root.
-5. `cmake .. -G "MinGW Makefiles"` or `cmake .. -G "Ninja"`.* For Linux, use the `Unix Makefiles` generator. 
+5. `cmake .. -G "MinGW Makefiles"` or `cmake .. -G "Ninja"`.* For Linux, use the `Unix Makefiles` generator.
 6. `cmake --build .`
 
 \* You could probably use other generators that end up using `gcc`/`g++` or `clang`, but that is untested.
