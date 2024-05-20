@@ -13,24 +13,14 @@ card_hand_action_result_t CardHand::shuffleHand(uint32_t seed) {
     return CARD_ACTION_RESULT_HAND_EMPTY;
   }
 
-  card_t newHand[CARDHAND_MAX_SIZE];
-  card_hand_index_t newHandIndex = 0;
-
+  // Fisher-Yates/Knuth shuffle algorithm
+  // From GitHub Copilot lol
   auto rng = cardhand_shuffle_rng_t(seed);
 
-  while (this->getHandSize() > 1) {
-    std::uniform_int_distribution<card_hand_index_t> dist(0, this->getHandSize() - 1);
+  for (card_hand_index_t i = this->getHandSize() - 1; i > 0; i--) {
+    std::uniform_int_distribution<card_hand_index_t> dist(0, i);
     card_hand_index_t randomIndex = dist(rng);
-    newHand[newHandIndex] = this->drawCard(randomIndex);
-    newHandIndex++;
-  }
-
-  newHand[newHandIndex] = this->drawCardFromTop();
-
-  this->clearHand();
-
-  for (card_hand_index_t i = 0; i < newHandIndex + 1; i++) {
-    this->addCardToTop(newHand[i]);
+    std::swap(this->hand[i], this->hand[randomIndex]);
   }
 
   return CARD_ACTION_RESULT_SUCCESS;

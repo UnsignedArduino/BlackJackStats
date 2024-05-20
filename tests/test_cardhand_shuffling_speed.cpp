@@ -36,7 +36,7 @@ int main() {
     TEST_LOG("Took %lld ms for %d iterations\n", duration, ITERATIONS)
     float average = (float) duration / ITERATIONS;
     TEST_LOG("Average time per iteration: %f ms\n", average)
-    TEST_ASSERT_LESS_THAN_OR_EQUAL_TO_INT(average * 10, 5)
+    TEST_ASSERT_LESS_THAN_OR_EQUAL_TO_INT(average * 100, 5)
   }
 
   TEST_END()
