@@ -13,61 +13,60 @@ void runOneRound(uint32_t seed, uint8_t action, uint32_t &wins, uint32_t &draws,
   draws = 0;
   losses = 0;
 
-  //  printf("Starting Blackjack game with single player with deck ID %d\n", seed);
+  printf("Starting Blackjack game with single player with deck ID %d\n", seed);
   BlackjackGame game;
   game.setup(seed);
-  //  printf("Player hand: ");
-  //  game.playerHand.printHand();
-  //  printf("\n");
+  printf("Player hand: ");
+  game.playerHand.printHand();
+  printf("\n");
 
   if (game.checkGameResult() == WIN) {
-    wins = ITERATIONS;
-    //    printf("Win!\n");
-    //    printf("Ending game immediately\n");
+    printf("Win!\n");
+    printf("Ending game immediately\n");
     return;
   }
 
-  //  printf("Dealer's first card: ");
-  //  printCardAndValue(game.dealerHand.getCardFromTop());
+  printf("Dealer's first card: ");
+  printCardAndValue(game.dealerHand.getCardFromTop());
 
   if (action == HIT) {
-    //    printf("\nPlayer hits\n");
+    printf("\nPlayer hits\n");
     game.hit();
-    //    printf("Player hand: ");
-    //    game.playerHand.printHand();
-    //    printf("\n");
+    printf("Player hand: ");
+    game.playerHand.printHand();
+    printf("\n");
     if (game.checkGameResult() == WIN) {
-      //      printf("Win!\n");
+      printf("Win!\n");
       wins = ITERATIONS;
-      //      printf("Ending game immediately\n");
+      printf("Ending game immediately\n");
       return;
     } else if (game.checkGameResult() == LOSE) {
-      //      printf("Lose!\n");
+      printf("Lose!\n");
       losses = ITERATIONS;
-      //      printf("Ending game immediately\n");
+      printf("Ending game immediately\n");
       return;
     }
   } else {
-    //    printf("\nPlayer stands\n");
+    printf("\nPlayer stands\n");
     game.stand();
-    //    printf("Dealer hand: ");
-    //    game.dealerHand.printHand();
-    //    printf("\n");
+    printf("Dealer hand: ");
+    game.dealerHand.printHand();
+    printf("\n");
     if (game.checkGameResult() == WIN) {
-      //      printf("Win!\n");
+      printf("Win!\n");
       wins = ITERATIONS;
     } else if (game.checkGameResult() == DRAW) {
-      //      printf("Draw!\n");
+      printf("Draw!\n");
       draws = ITERATIONS;
     } else {
-      //      printf("Lose!\n");
+      printf("Lose!\n");
       losses = ITERATIONS;
     }
-    //    printf("Ending game immediately\n");
+    printf("Ending game immediately\n");
     return;
   }
 
-  //  printf("Simulating possible game outcomes\n");
+  printf("Simulating possible game outcomes\n");
   auto rng = std::mt19937(seed);
   std::uniform_int_distribution<uint8_t> dist(STAND, HIT);
   for (uint32_t i = 0; i < ITERATIONS; i++) {
@@ -107,14 +106,15 @@ int main() {
   //  runOneRound(5, STAND, wins, draws, losses);// Loses
   //  printf("\n");
 
-  printf("Deck ID, Action, Wins, Draws, Losses\n");
+  printf("> Deck ID, Action, Wins, Draws, Losses\n");
+
   for (uint32_t i = 0; i < 10; i++) {
     runOneRound(i, STAND, wins, draws, losses);
-    //    printf("W/D/L %d/%d/%d out of %d \n", wins, draws, losses, ITERATIONS);
-    printf("%d, STAND, %d, %d, %d\n", i, wins, draws, losses);
+    printf("W/D/L %d/%d/%d out of %d \n", wins, draws, losses, ITERATIONS);
+    printf("> %d, STAND, %d, %d, %d\n", i, wins, draws, losses);
     runOneRound(i, HIT, wins, draws, losses);
-    //    printf("W/D/L %d/%d/%d out of %d \n", wins, draws, losses, ITERATIONS);
-    printf("%d, HIT, %d, %d, %d\n", i, wins, draws, losses);
+    printf("W/D/L %d/%d/%d out of %d \n", wins, draws, losses, ITERATIONS);
+    printf("> %d, HIT, %d, %d, %d\n", i, wins, draws, losses);
   }
 
   return 0;
