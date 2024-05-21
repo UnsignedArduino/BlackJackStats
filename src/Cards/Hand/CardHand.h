@@ -60,7 +60,7 @@ class CardHand {
     card_t drawCardFromBottom();
     card_t drawCard(card_hand_index_t index);
 
-    void printHand();
+    virtual void printHand();
     void printAsArray();
 
     card_t hand[CARDHAND_MAX_SIZE];
