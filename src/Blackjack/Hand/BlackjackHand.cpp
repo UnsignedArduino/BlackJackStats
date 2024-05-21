@@ -4,20 +4,10 @@
 void printCardAndValue(card_t card) {
   printCard(card);
   if ((card & CARD_RANK_MASK) == CARD_RANK_ACE) {
-    printf(" (11 / 1)");
+    printf("(11 / 1)");
   } else {
-    printf(" (%d)", card & CARD_RANK_MASK);
+    printf("(%d)", card & CARD_RANK_MASK);
   }
-}
-
-card_t BlackjackHand::getHardHandValue() {
-  card_t value = 0;
-
-  for (card_hand_index_t i = 0; i < CARDHAND_MAX_SIZE; i++) {
-    value += fmin(this->hand[i] & CARD_RANK_MASK, 10);
-  }
-
-  return value;
 }
 
 card_t BlackjackHand::getHandValue() {
@@ -47,9 +37,5 @@ void BlackjackHand::printHand() {
     }
     printCard(this->hand[i]);
   }
-  if (this->getHandValue() != this->getHardHandValue()) {
-    printf(" (%d / %d)", this->getHandValue(), this->getHardHandValue());
-  } else {
-    printf(" (%d)", this->getHardHandValue());
-  }
+  printf("(%d)", this->getHandValue());
 }

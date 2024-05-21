@@ -10,7 +10,6 @@ class BlackjackHand : public CardHand {
     BlackjackHand() = default;
     ~BlackjackHand() = default;
 
-    card_t getHardHandValue();
     card_t getHandValue();
 
     void printHand();
