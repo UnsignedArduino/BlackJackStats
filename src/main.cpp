@@ -18,7 +18,7 @@ const int8_t RESULT_WIN = 1;
 const int8_t RESULT_LOSS = -1;
 const int8_t RESULT_TIE = 0;
 
-int8_t simulateGame(uint32_t seed, uint8_t action, card_t &sum) {
+blackjack_game_state_t simulateGame(uint32_t seed, uint8_t action, card_t &sum) {
   logf("Blackjack game (#%d)\n", seed);
   BlackjackGame game;
   game.setup(seed);
@@ -29,6 +29,11 @@ int8_t simulateGame(uint32_t seed, uint8_t action, card_t &sum) {
 #endif
 
   sum = game.playerHand.getHandValue();
+
+  if (game.gameState() == BLACKJACK_GAME_PLAYER_WIN) {
+    logf("Player wins with instant blackjack!\n");
+    return BLACKJACK_GAME_PLAYER_WIN;
+  }
 
   logf("\nDealer hand: ");
 #ifdef DEBUG
@@ -100,8 +105,8 @@ int main() {
   printf("seed, sum, action, result\n");
 
   card_t sum;
-  int8_t result;
-  for (uint32_t seed = 0; seed < 1000; seed++) {
+  blackjack_game_state_t result;
+  for (uint32_t seed = 0; seed < 10000; seed++) {
     result = simulateGame(seed, ACTION_STAND, sum);
     printf("%d, %d, STAND, %s\n", seed, sum, result == BLACKJACK_GAME_PLAYER_WIN ? "WIN" : result == BLACKJACK_GAME_PLAYER_LOSS ? "LOSS"
                                                                                                                                 : "TIE");

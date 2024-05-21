@@ -24,12 +24,16 @@ blackjack_game_state_t BlackjackGame::gameState() {
   const card_t playerHand = this->playerHand.getHandValue();
   const card_t dealerHand = this->dealerHand.getHandValue();
 
-  if (!this->playerDone) {
-    return BLACKJACK_GAME_IN_PROGRESS;
-  } else if (playerHand > 21) {
+  if (playerHand > 21) {
     return BLACKJACK_GAME_PLAYER_LOSS;
   } else if (dealerHand > 21) {
     return BLACKJACK_GAME_PLAYER_WIN;
+  } else if (playerHand == 21) {
+    return BLACKJACK_GAME_PLAYER_WIN;
+  } else if (dealerHand == 21) {
+    return BLACKJACK_GAME_PLAYER_LOSS;
+  } else if (!this->playerDone) {
+    return BLACKJACK_GAME_IN_PROGRESS;
   } else if (playerHand > dealerHand) {
     return BLACKJACK_GAME_PLAYER_WIN;
   } else if (playerHand < dealerHand) {
