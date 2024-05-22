@@ -43,16 +43,16 @@ blackjack_game_state_t BlackjackGame::gameState() {
   }
 }
 
-void BlackjackGame::playerHit() {
-  this->playerHand.addCardToBottom(this->deck.drawCardFromTop());
-  if (this->playerHand.getHandValue() >= 21) {
-    this->playerDone = true;
-  }
-}
+// void BlackjackGame::playerHit() {
+//   this->playerHand.addCardToBottom(this->deck.drawCardFromTop());
+//   if (this->playerHand.getHandValue() >= 21) {
+//     this->playerDone = true;
+//   }
+// }
 
-void BlackjackGame::playerStand() {
-  this->playerDone = true;
-  while (this->dealerHand.getHandValue() < 17) {
-    this->dealerHand.addCardToBottom(this->deck.drawCardFromTop());
-  }
-}
+// void BlackjackGame::playerStand() {
+//   this->playerDone = true;
+//   while (this->dealerHand.getHandValue() < 17) {
+//     this->dealerHand.addCardToBottom(this->deck.drawCardFromTop());
+//   }
+// }
