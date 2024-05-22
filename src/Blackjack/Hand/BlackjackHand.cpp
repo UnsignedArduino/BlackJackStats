@@ -6,7 +6,7 @@ void printCardAndValue(card_t card) {
   if ((card & CARD_RANK_MASK) == CARD_RANK_ACE) {
     printf("(11 / 1)");
   } else {
-    printf("(%d)", card & CARD_RANK_MASK);
+    printf("(%d)", fmin(card & CARD_RANK_MASK, 10));
   }
 }
 
