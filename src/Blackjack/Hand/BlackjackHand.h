@@ -11,8 +11,10 @@ class BlackjackHand : public CardHand {
     ~BlackjackHand() = default;
 
     card_t getHandValue();
+    bool canSplit();
 
-    void printHand();
+    void
+    printHand() override;
 
   private:
 };
