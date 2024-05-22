@@ -33,7 +33,7 @@ bool BlackjackHand::canSplit() {
   if (this->getHandSize() != 2) {
     return false;
   }
-  return (this->hand[0] & CARD_RANK_MASK) == (this->hand[1] & CARD_RANK_MASK);
+  return fmin(this->hand[0] & CARD_RANK_MASK, 10) == fmin(this->hand[1] & CARD_RANK_MASK, 10);
 }
 
 void BlackjackHand::printHand() {
