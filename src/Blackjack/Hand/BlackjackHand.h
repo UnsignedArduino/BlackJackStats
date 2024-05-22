@@ -1,7 +1,7 @@
-#include "../../Cards/Hand/CardHand.h"
-
 #ifndef BLACKJACKSTATS_BLACKJACKHAND_H
-  #define BLACKJACKSTATS_BLACKJACKHAND_H
+#define BLACKJACKSTATS_BLACKJACKHAND_H
+
+#include "../../Cards/Hand/CardHand.h"
 
 void printCardAndValue(card_t card);
 

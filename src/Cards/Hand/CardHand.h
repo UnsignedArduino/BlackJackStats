@@ -1,3 +1,6 @@
+#ifndef BLACKJACKSTATS_CARDHAND_H
+#define BLACKJACKSTATS_CARDHAND_H
+
 #include "../Cards.h"
 #include <random>
 
@@ -25,9 +28,6 @@ typedef int16_t card_hand_index_t;
   #define CARDHAND_SHUFFLE_RNG std::mt19937
 //  #define CARDHAND_SHUFFLE_RNG std::minstd_rand  // 0.01 ms faster but less random
 #endif//CARDHAND_SHUFFLE_RNG
-
-#ifndef BLACKJACKSTATS_CARDHAND_H
-  #define BLACKJACKSTATS_CARDHAND_H
 
 typedef uint8_t card_hand_action_result_t;
 typedef CARDHAND_SHUFFLE_RNG cardhand_shuffle_rng_t;
