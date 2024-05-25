@@ -32,8 +32,13 @@ int8_t simulateGame(uint32_t seed, card_t &sum) {
       printf("\n");
     }
     if (dist(rng) == 1) {
-      printf("Hit hand %d\n", nextHandIndex + 1);
-      game.player.hit(nextHandIndex, game.deck.drawCardFromTop());
+      bool doubleDown = !game.player.handsDoubledDown[nextHandIndex] ? dist(rng) == 1 : false;
+      if (doubleDown) {
+        printf("Double down hand %d\n", nextHandIndex + 1);
+      } else {
+        printf("Hit hand %d\n", nextHandIndex + 1);
+      }
+      game.player.hit(nextHandIndex, game.deck.drawCardFromTop(), doubleDown);
       game.player.printHands();
       printf("\n");
     } else {
@@ -56,12 +61,13 @@ int8_t simulateGame(uint32_t seed, card_t &sum) {
     if (game.player.hands[i] == nullptr) {
       continue;
     }
-    if (game.player.hands[i]->getHandValue() > 21) {
-      printf("Hand %d: BUST (-1)\n", i + 1);
-    } else if (game.dealerHand.getHandValue() > 21 || game.player.hands[i]->getHandValue() > game.dealerHand.getHandValue()) {
-      printf("Hand %d: WIN (+1)\n", i + 1);
-    } else if (game.player.hands[i]->getHandValue() < game.dealerHand.getHandValue()) {
-      printf("Hand %d: LOSS (-1)\n", i + 1);
+    int8_t resultOfHand = game.moneyFlow(i);
+    if (resultOfHand > 0) {
+      printf("Hand %d: WIN (%+d)\n", i + 1, game.player.handsDoubledDown[i] ? 2 : 1);
+    } else if (resultOfHand < 0) {
+      printf("Hand %d: LOSS (%+d)\n", i + 1, game.player.handsDoubledDown[i] ? -2 : -1);
+    } else {
+      printf("Hand %d: DRAW (+0)\n", i + 1);
     }
   }
 
@@ -76,13 +82,11 @@ int main() {
   card_t sum;
   int8_t result;
 
-  //  result = simulateGame(123, sum);
-  //  return 0;
-
-  // Results in splits
-  //  result = simulateGame(27, sum);
-  //  result = simulateGame(28, sum);
-  result = simulateGame(80, sum);
+  // result = simulateGame(0, sum);  // -2
+  result = simulateGame(45, sum);  // +1
+  // result = simulateGame(27, sum);  // 2 split +2
+  // result = simulateGame(28, sum); // 4 split +4
+  // result = simulateGame(80, sum);  // 2 split +4
   return 0;
 
   for (uint32_t seed = 0; seed < 1; seed++) {

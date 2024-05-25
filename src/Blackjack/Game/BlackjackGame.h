@@ -14,7 +14,7 @@ class BlackjackGame {
     ~BlackjackGame() = default;
 
     blackjack_game_state_t gameState();
-    int8_t moneyFlow();
+    int8_t moneyFlow(int8_t hand = -1);
 
     void dealerHits();
 

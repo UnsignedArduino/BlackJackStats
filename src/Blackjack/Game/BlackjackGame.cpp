@@ -23,19 +23,29 @@ blackjack_game_state_t BlackjackGame::gameState() {
   }
 }
 
-int8_t BlackjackGame::moneyFlow() {
+int8_t BlackjackGame::moneyFlow(int8_t hand /* = -1*/) {
+  if (hand > 0 && hand < this->player.getHandCount()) {
+    int8_t thisFlow;
+    if (this->player.hands[hand]->getHandValue() > 21) {
+      thisFlow = -1;
+    } else if (this->dealerHand.getHandValue() > 21) {
+      thisFlow = 1;
+    } else if (this->player.hands[hand]->getHandValue() > this->dealerHand.getHandValue()) {
+      thisFlow = 1;
+    } else if (this->player.hands[hand]->getHandValue() < this->dealerHand.getHandValue()) {
+      thisFlow = -1;
+    }
+    if (this->player.handsDoubledDown[hand]) {
+      thisFlow *= 2;
+    }
+    return thisFlow;
+  }
   int8_t flow = 0;
   for (uint8_t i = 0; i < PLAYER_SPLITS_MAX; i++) {
     if (this->player.hands[i] == nullptr) {
       continue;
-    }
-    if (this->player.hands[i]->getHandValue() > 21) {
-      flow -= 1;
-    } else if (this->dealerHand.getHandValue() > 21 || this->player.hands[i]->getHandValue() > this->dealerHand.getHandValue()) {
-      flow += 1;
-    } else if (this->player.hands[i]->getHandValue() < this->dealerHand.getHandValue()) {
-      flow -= 1;
-    }
+    }    
+    flow += this->moneyFlow(i);
   }
   return flow;
 }

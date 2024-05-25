@@ -3,9 +3,11 @@
 BlackjackPlayer::BlackjackPlayer() {
   this->hands[0] = new BlackjackHand();
   this->handsStood[0] = false;
+  this->handsDoubledDown[0] = false;
   for (uint8_t i = 1; i < PLAYER_SPLITS_MAX; i++) {
     this->hands[i] = nullptr;
     this->handsStood[i] = false;
+    this->handsDoubledDown[i] = false;
   }
 }
 
@@ -15,14 +17,18 @@ void BlackjackPlayer::printHands() {
     if (this->hands[i] == nullptr) {
       break;
     }
-    printf("\nHand %d / %d: ", i + 1, this->getHandCount());
+    printf("\nHand %d: ", i + 1);
     for (card_hand_index_t j = 0; j < CARDHAND_MAX_SIZE; j++) {
       if (this->hands[i]->hand[j] == CARD_NULL) {
         break;
       }
       printCard(this->hands[i]->hand[j]);
     }
-    printf("(%d)", this->hands[i]->getHandValue());
+    printf("(%d", this->hands[i]->getHandValue());
+    if (this->handsDoubledDown[i]) {
+      printf(" - doubled");
+    }
+    printf(")");
   }
 }
 
@@ -35,12 +41,18 @@ uint8_t BlackjackPlayer::getHandCount() {
   return PLAYER_SPLITS_MAX;
 }
 
-blackjack_player_action_result_t BlackjackPlayer::hit(uint8_t handIndex, card_t card) {
+blackjack_player_action_result_t BlackjackPlayer::hit(uint8_t handIndex, card_t card, bool doubleDown /* = false*/) {
   if (this->handsStood[handIndex]) {
     return BLACKJACK_PLAYER_ACTION_RESULT_ALREADY_STOOD;
+  } else if (this->handsDoubledDown[handIndex]) {
+    return BLACKJACK_PLAYER_ACTION_RESULT_ALREADY_DOUBLED_DOWN;
   } else if (this->hands[handIndex]->addCardToBottom(card) == CARD_ACTION_RESULT_SUCCESS) {
     if (this->hands[handIndex]->getHandValue() > 21) {
       this->handsStood[handIndex] = true;
+    }
+    if (doubleDown) {
+      this->handsDoubledDown[handIndex] = true;
+      this->stand(handIndex);
     }
     return BLACKJACK_PLAYER_ACTION_RESULT_SUCCESS;
   } else {
