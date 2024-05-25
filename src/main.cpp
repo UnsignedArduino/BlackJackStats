@@ -82,7 +82,7 @@ int main() {
   card_t sum;
   int8_t result;
 
-  //  result = simulateGame(0, sum);// -2
+  result = simulateGame(0, sum);// -2
   //  result = simulateGame(45, sum);// -1
   //  result = simulateGame(27, sum);// 2 split +2
   //  result = simulateGame(28, sum);// 4 split +4
