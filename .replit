@@ -1,4 +1,4 @@
-compile = "cmake --build build"
+compile = "cmake --build build --target main"
 run = "./build/main"
 hidden = ["main", "**/*.o", "**/*.d", ".ccls-cache", "Makefile"]
 

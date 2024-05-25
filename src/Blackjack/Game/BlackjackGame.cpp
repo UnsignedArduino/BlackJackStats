@@ -1,57 +1,56 @@
 #include "BlackjackGame.h"
 
-BlackjackGame::BlackjackGame() {
+BlackjackGame::BlackjackGame(uint32_t seed) {
   this->deck = CardHand();
   this->dealerHand = BlackjackHand();
-  this->playerHand = BlackjackHand();
-}
+  this->player = BlackjackPlayer();
 
-void BlackjackGame::setup(uint32_t seed) {
-  this->deck.clearHand();
   this->deck.fillHandWithDeck();
   this->deck.shuffleHand(seed);
 
-  this->dealerHand.clearHand();
   this->dealerHand.addCardToTop(this->deck.drawCardFromTop());
   this->dealerHand.addCardToTop(this->deck.drawCardFromTop());
 
-  this->playerHand.clearHand();
-  this->playerHand.addCardToTop(this->deck.drawCardFromTop());
-  this->playerHand.addCardToTop(this->deck.drawCardFromTop());
+  this->player.hands[0]->addCardToTop(this->deck.drawCardFromTop());
+  this->player.hands[0]->addCardToTop(this->deck.drawCardFromTop());
 }
 
 blackjack_game_state_t BlackjackGame::gameState() {
-  const card_t playerHand = this->playerHand.getHandValue();
-  const card_t dealerHand = this->dealerHand.getHandValue();
-
-  if (playerHand > 21) {
-    return BLACKJACK_GAME_PLAYER_LOSS;
-  } else if (dealerHand > 21) {
-    return BLACKJACK_GAME_PLAYER_WIN;
-  } else if (playerHand == 21) {
-    return BLACKJACK_GAME_PLAYER_WIN;
-  } else if (dealerHand == 21) {
-    return BLACKJACK_GAME_PLAYER_LOSS;
-  } else if (!this->playerDone) {
-    return BLACKJACK_GAME_IN_PROGRESS;
-  } else if (playerHand > dealerHand) {
-    return BLACKJACK_GAME_PLAYER_WIN;
-  } else if (playerHand < dealerHand) {
-    return BLACKJACK_GAME_PLAYER_LOSS;
+  if (this->player.gameState() == BLACKJACK_PLAYER_GAME_STATE_PLAYER_FINISHED) {
+    return BLACKJACK_GAME_STATE_PLAYER_FINISHED;
   } else {
-    return BLACKJACK_GAME_DRAW;
+    return BLACKJACK_GAME_STATE_IN_PROGRESS;
   }
 }
 
-void BlackjackGame::playerHit() {
-  this->playerHand.addCardToBottom(this->deck.drawCardFromTop());
-  if (this->playerHand.getHandValue() >= 21) {
-    this->playerDone = true;
+int8_t BlackjackGame::moneyFlow(int8_t hand /* = -1*/) {
+  if (hand >= 0 && hand < this->player.getHandCount()) {
+    int8_t thisFlow = 0;
+    if (this->player.hands[hand]->getHandValue() > 21) {
+      thisFlow = -1;
+    } else if (this->dealerHand.getHandValue() > 21) {
+      thisFlow = 1;
+    } else if (this->player.hands[hand]->getHandValue() > this->dealerHand.getHandValue()) {
+      thisFlow = 1;
+    } else if (this->player.hands[hand]->getHandValue() < this->dealerHand.getHandValue()) {
+      thisFlow = -1;
+    }
+    if (this->player.handsDoubledDown[hand]) {
+      thisFlow *= 2;
+    }
+    return thisFlow;
   }
+  int8_t flow = 0;
+  for (uint8_t i = 0; i < PLAYER_SPLITS_MAX; i++) {
+    if (this->player.hands[i] == nullptr) {
+      continue;
+    }
+    flow += this->moneyFlow(i);
+  }
+  return flow;
 }
 
-void BlackjackGame::playerStand() {
-  this->playerDone = true;
+void BlackjackGame::dealerHits() {
   while (this->dealerHand.getHandValue() < 17) {
     this->dealerHand.addCardToBottom(this->deck.drawCardFromTop());
   }

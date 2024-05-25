@@ -1,12 +1,11 @@
 #include "BlackjackHand.h"
-#include "../../Cards/Hand/CardHand.h"
 
 void printCardAndValue(card_t card) {
   printCard(card);
   if ((card & CARD_RANK_MASK) == CARD_RANK_ACE) {
     printf("(11 / 1)");
   } else {
-    printf("(%d)", fmin(card & CARD_RANK_MASK, 10));
+    printf("(%f)", fmin(card & CARD_RANK_MASK, 10));
   }
 }
 
@@ -28,6 +27,13 @@ card_t BlackjackHand::getHandValue() {
   }
 
   return value;
+}
+
+bool BlackjackHand::canSplit() {
+  if (this->getHandSize() != 2) {
+    return false;
+  }
+  return fmin(this->hand[0] & CARD_RANK_MASK, 10) == fmin(this->hand[1] & CARD_RANK_MASK, 10);
 }
 
 void BlackjackHand::printHand() {
