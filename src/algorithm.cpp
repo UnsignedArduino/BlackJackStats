@@ -20,12 +20,14 @@ blackjack_game_move_t getMoveFromMatrix(blackjack_game_move_t matrix[AM_DEALERS_
   const blackjack_game_move_t* matrixRow = matrix[min(dealerCard & CARD_RANK_MASK, 10) - 1];
   const card_t firstCard = playerHand.getCardFromTop();
   const card_t lastCard = playerHand.getCardFromBottom();
+  const card_t softValue = playerHand.getSoftHandValue();
+  const card_t hardValue = playerHand.getHardHandValue();
   if (firstCard == lastCard && playerHand.getHandSize() == 2) { // Pair
     return matrixRow[16 + 8 + (firstCard & CARD_RANK_MASK) - 1];
-  } else if (playerHand.getSoftHandValue() != playerHand.getHardHandValue()) { // Soft hand
-    return matrixRow[16 + (playerHand.getHardHandValue() - 3)];
+  } else if (softValue != hardValue) { // Soft hand
+    return matrixRow[16 + (hardValue - 3)];
   } else { // Hard hand
-    return matrixRow[playerHand.getHardHandValue() - 5];
+    return matrixRow[hardValue - 5];
   }
   return BLACKJACK_GAME_MOVE_STAND;
 }

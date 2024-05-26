@@ -66,19 +66,19 @@ int8_t simulateGame(uint32_t seed) {
   //  game.dealerHand.printHand();
   //  TEST_LOG("\n");
 
-  for (uint8_t i = 0; i < PLAYER_SPLITS_MAX; i++) {
-    if (game.player.hands[i] == nullptr) {
-      continue;
-    }
-    int8_t resultOfHand = game.moneyFlow(i);
-    if (resultOfHand > 0) {
-      //      TEST_LOG("Hand %d: WIN (%+d)\n", i + 1, game.player.handsDoubledDown[i] ? 2 : 1);
-    } else if (resultOfHand < 0) {
-      //      TEST_LOG("Hand %d: LOSS (%+d)\n", i + 1, game.player.handsDoubledDown[i] ? -2 : -1);
-    } else {
-      //      TEST_LOG("Hand %d: DRAW (+0)\n", i + 1);
-    }
-  }
+  //  for (uint8_t i = 0; i < PLAYER_SPLITS_MAX; i++) {
+  //    if (game.player.hands[i] == nullptr) {
+  //      continue;
+  //    }
+  //    int8_t resultOfHand = game.moneyFlow(i);
+  //    if (resultOfHand > 0) {
+  //      TEST_LOG("Hand %d: WIN (%+d)\n", i + 1, game.player.handsDoubledDown[i] ? 2 : 1);
+  //    } else if (resultOfHand < 0) {
+  //      TEST_LOG("Hand %d: LOSS (%+d)\n", i + 1, game.player.handsDoubledDown[i] ? -2 : -1);
+  //    } else {
+  //      TEST_LOG("Hand %d: DRAW (+0)\n", i + 1);
+  //    }
+  //  }
 
   //  TEST_LOG("Total money flow: %+d\n", game.moneyFlow());
 
@@ -86,7 +86,7 @@ int8_t simulateGame(uint32_t seed) {
 }
 
 // Index is seed
-const int8_t gameResults[] = {1, -1, -1, -1, 0, -1, -1, -1, -1, 1, 1, -1, -2, 2, -1, -1, -2, 0, -1, -1, 1, -1, 2, 0, 1, -1, -1, 1, 1, -1, -1, 1, 2, -1, 1, 0, 1, -2, -1, -1, -1, -1, 0, 1, -1, -1, 1, -1, 1, -1, 1, 1, 0, -1, 0, 1, -1, -1, -1, -1, -1, 0, 1, -1, -1, -2, -1, 1, 1, 1, -1, 0, 2, -1, -1, 1, 1, 1, 1, 1, -1, -1, -1, -1, 2, 1, -1, -1, 1, -1, 1, 2, -1, 0, -1, -1, 1, -1, 1, -1};
+const int8_t gameResults[] = {1, -1, -1, -1, 0, -1, -1, -1, -1, 1, 1, -1, -2, 2, -1, -1, 2, 0, -1, -1, 1, -1, 2, 0, 1, -1, -1, 1, 1, -1, -1, -1, 2, -1, 1, 0, 1, -2, -1, -1, -1, -1, 0, 1, -1, -1, 1, -1, 1, -1, 1, 1, 2, -1, 0, 1, -1, -1, -1, -1, -1, 0, 1, -1, -1, -2, -1, 1, 1, 1, -1, 0, 2, -1, -1, 1, 1, 1, 1, 1, -1, -1, -1, -1, 2, 1, -1, -1, 1, -1, 1, 2, -1, 0, -1, -1, 1, 1, 1, -1};
 
 int main() {
   TEST_START("blackjack games")

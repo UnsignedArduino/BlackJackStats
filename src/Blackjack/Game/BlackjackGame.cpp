@@ -51,7 +51,7 @@ int8_t BlackjackGame::moneyFlow(int8_t hand /* = -1*/) {
 }
 
 void BlackjackGame::dealerHits() {
-  while (this->dealerHand.getSoftHandValue() < 17) {
+  while (this->dealerHand.getSoftHandValue() <= 17) {
     this->dealerHand.addCardToBottom(this->deck.drawCardFromTop());
   }
 }
