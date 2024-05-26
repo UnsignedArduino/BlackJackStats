@@ -4,6 +4,7 @@
 #include "Blackjack/Hand/BlackjackHand.h"
 #include "Cards/Hand/CardHand.h"
 #include "helpers.h"
+#include <cstring>
 
 typedef char blackjack_game_move_t;
 const blackjack_game_move_t BLACKJACK_GAME_MOVE_STAND = 's';
@@ -26,6 +27,8 @@ const uint8_t AM_DEALERS_SIZE = 10;
 const uint8_t AM_PLAYERS_SIZE = 16 + 8 + 10 + 1; // for terminating null character in string, not needed
 
 blackjack_game_move_t getMoveFromMatrix(blackjack_game_move_t matrix[AM_DEALERS_SIZE][AM_PLAYERS_SIZE], card_t dealerCard, BlackjackHand playerHand);
+
+void printMatrix(blackjack_game_move_t matrix[AM_DEALERS_SIZE][AM_PLAYERS_SIZE]);
 
 extern blackjack_game_move_t perfect_algorithm_matrix[AM_DEALERS_SIZE][AM_PLAYERS_SIZE];
 

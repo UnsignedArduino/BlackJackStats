@@ -61,5 +61,6 @@ int32_t fitness(blackjack_game_move_t algorithmMatrix[AM_DEALERS_SIZE][AM_PLAYER
 }
 
 int main() {
-  printf("%d\n", fitness(perfect_algorithm_matrix));
+  printMatrix(perfect_algorithm_matrix);
+  // printf("%d\n", fitness(perfect_algorithm_matrix));
 }
