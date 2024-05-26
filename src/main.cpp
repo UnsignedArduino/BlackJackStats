@@ -4,13 +4,11 @@
 #include <cstdio>
 #include <random>
 
-int8_t simulateGame(uint32_t seed, card_t &sum) {
+int8_t simulateGame(uint32_t seed, blackjack_game_move_t algorithmMatrix[AM_DEALERS_SIZE][AM_PLAYERS_SIZE]) {
   printf("Blackjack game (#%d)\n", seed);
   auto game = BlackjackGame(seed);
 
   game.player.printHands();
-
-  sum = game.player.hands[0]->getSoftHandValue();
 
   if (game.gameState() == BLACKJACK_GAME_STATE_PLAYER_FINISHED) {
     printf("\nPlayer wins with instant blackjack!\n");
@@ -19,34 +17,43 @@ int8_t simulateGame(uint32_t seed, card_t &sum) {
   }
 
   printf("\nDealer hand: ");
-  printCard(game.dealerHand.getCardFromTop());
+  const card_t faceUp = game.dealerHand.getCardFromTop();
+  printCard(faceUp);
   printf("??  \n");
-
-  std::mt19937 rng(seed);
-  std::uniform_int_distribution<uint8_t> dist(0, 1);
 
   while (game.gameState() == BLACKJACK_GAME_STATE_IN_PROGRESS) {
     int8_t nextHandIndex = game.player.getNextHandIndex();
-    if (game.player.hands[nextHandIndex]->canSplit()) {
-      printf("Split hand %d\n", nextHandIndex + 1);
-      game.player.splitHand(nextHandIndex);
-      game.player.printHands();
-      printf("\n");
-    }
-    if (dist(rng) == 1) {
-      bool doubleDown = !game.player.handsDoubledDown[nextHandIndex] ? dist(rng) == 1 : false;
-      if (doubleDown) {
-        printf("Double down hand %d\n", nextHandIndex + 1);
-      } else {
-        printf("Hit hand %d\n", nextHandIndex + 1);
+    blackjack_game_move_t move = getMoveFromMatrix(algorithmMatrix, faceUp, *game.player.hands[nextHandIndex]);
+    switch (move) {
+      default:
+      case BLACKJACK_GAME_MOVE_STAND: {
+        printf("Stand on hand %d\n", nextHandIndex + 1);
+        game.player.stand(nextHandIndex);
+        break;
       }
-      game.player.hit(nextHandIndex, game.deck.drawCardFromTop(), doubleDown);
-      game.player.printHands();
-      printf("\n");
-    } else {
-      printf("Stand on hand %d\n", nextHandIndex + 1);
-      game.player.stand(nextHandIndex);
+      case BLACKJACK_GAME_MOVE_HIT: {
+        printf("Hit hand %d\n", nextHandIndex + 1);
+        game.player.hit(nextHandIndex, game.deck.drawCardFromTop(), false);
+        break;
+      }
+      case BLACKJACK_GAME_MOVE_DOUBLE_DOWN: {
+        printf("Double down hand %d\n", nextHandIndex + 1);
+        game.player.hit(nextHandIndex, game.deck.drawCardFromTop(), true);
+        break;
+      }
+      case BLACKJACK_GAME_MOVE_SPLIT: {
+        if (game.player.hands[nextHandIndex]->canSplit()) {
+          printf("Split hand %d\n", nextHandIndex + 1);
+          game.player.splitHand(nextHandIndex);
+        } else {
+          printf("Warning: illegal attempt to split hand %d\n", nextHandIndex + 1);
+          printf("Stand on hand %d\n", nextHandIndex + 1);
+          game.player.stand(nextHandIndex);
+        }
+      }
     }
+    game.player.printHands();
+    printf("\n");
   }
 
   printf("Dealer hand: ");
@@ -79,23 +86,22 @@ int8_t simulateGame(uint32_t seed, card_t &sum) {
 }
 
 int main() {
-  printf("seed, sum, result\n");
+  printf("seed, perfect_algorithm_matrix, result\n");
 
-  card_t sum;
   int8_t result;
 
-  result = simulateGame(0, sum); // -2 with ace
-  //  result = simulateGame(1, sum); // -1
-  //  result = simulateGame(10, sum);  // +1 instant blackjack
-  //  result = simulateGame(45, sum); // -1
-  //  result = simulateGame(27, sum);// 2 split +2
-  //  result = simulateGame(28, sum);// 4 split +4
-  //  result = simulateGame(80, sum);// 2 split +4
-  return 0;
+  //  result = simulateGame(0, perfect_algorithm_matrix); // +1 with ace
+  //  result = simulateGame(1, perfect_algorithm_matrix); // -1
+  result = simulateGame(2, perfect_algorithm_matrix);
+  //  result = simulateGame(10, perfect_algorithm_matrix); // +1 instant blackjack
+  //  result = simulateGame(45, perfect_algorithm_matrix); // -1
+  //  result = simulateGame(27, perfect_algorithm_matrix);// 2 split +2
+  //  result = simulateGame(28, perfect_algorithm_matrix);// 4 split +4
+  //  result = simulateGame(80, perfect_algorithm_matrix);// 2 split +4
 
-  for (uint32_t seed = 0; seed < 1; seed++) {
-    result = simulateGame(seed, sum);
-    // printf("%d, %d, %s\n", seed, sum, result == BLACKJACK_GAME_PLAYER_WIN ? "WIN" : result == BLACKJACK_GAME_PLAYER_LOSS ? "LOSS"
-    //                                                                                                                      : "TIE");
-  }
+  //  for (uint32_t seed = 0; seed < 1; seed++) {
+  //    result = simulateGame(seed, perfect_algorithm_matrix);
+  //    // printf("%d, %d, %s\n", seed, perfect_algorithm_matrix, result == BLACKJACK_GAME_PLAYER_WIN ? "WIN" : result == BLACKJACK_GAME_PLAYER_LOSS ? "LOSS"
+  //    //                                                                                                                      : "TIE");
+  //  }
 }

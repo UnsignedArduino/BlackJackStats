@@ -1,5 +1,6 @@
 #include "../src/Blackjack/Game/BlackjackGame.h"
-#include "helpers.h"
+#include "../src/algorithm.h"
+#include "test_helpers.h"
 #include <cstdio>
 
 int8_t simulateGame(uint32_t seed) {
@@ -16,34 +17,43 @@ int8_t simulateGame(uint32_t seed) {
   }
 
   //  TEST_LOG("\nDealer hand: ");
-  //  printCard(game.dealerHand.getCardFromTop());
+  const card_t faceUp = game.dealerHand.getCardFromTop();
+  //  printCard(faceUp);
   //  TEST_LOG("??  \n");
-
-  std::mt19937 rng(seed);
-  std::uniform_int_distribution<uint8_t> dist(0, 1);
 
   while (game.gameState() == BLACKJACK_GAME_STATE_IN_PROGRESS) {
     int8_t nextHandIndex = game.player.getNextHandIndex();
-    if (game.player.hands[nextHandIndex]->canSplit()) {
-      //      TEST_LOG("Split hand %d\n", nextHandIndex + 1);
-      game.player.splitHand(nextHandIndex);
-      //      game.player.printHands();
-      //      TEST_LOG("\n");
-    }
-    if (dist(rng) == 1) {
-      bool doubleDown = !game.player.handsDoubledDown[nextHandIndex] ? dist(rng) == 1 : false;
-      if (doubleDown) {
-        //        TEST_LOG("Double down hand %d\n", nextHandIndex + 1);
-      } else {
-        //        TEST_LOG("Hit hand %d\n", nextHandIndex + 1);
+    blackjack_game_move_t move = getMoveFromMatrix(perfect_algorithm_matrix, faceUp, *game.player.hands[nextHandIndex]);
+    switch (move) {
+      default:
+      case BLACKJACK_GAME_MOVE_STAND: {
+        //        TEST_LOG("Stand on hand %d\n", nextHandIndex + 1);
+        game.player.stand(nextHandIndex);
+        break;
       }
-      game.player.hit(nextHandIndex, game.deck.drawCardFromTop(), doubleDown);
-      //      game.player.printHands();
-      //      TEST_LOG("\n");
-    } else {
-      //      TEST_LOG("Stand on hand %d\n", nextHandIndex + 1);
-      game.player.stand(nextHandIndex);
+      case BLACKJACK_GAME_MOVE_HIT: {
+        //        TEST_LOG("Hit hand %d\n", nextHandIndex + 1);
+        game.player.hit(nextHandIndex, game.deck.drawCardFromTop(), false);
+        break;
+      }
+      case BLACKJACK_GAME_MOVE_DOUBLE_DOWN: {
+        //        TEST_LOG("Double down hand %d\n", nextHandIndex + 1);
+        game.player.hit(nextHandIndex, game.deck.drawCardFromTop(), true);
+        break;
+      }
+      case BLACKJACK_GAME_MOVE_SPLIT: {
+        if (game.player.hands[nextHandIndex]->canSplit()) {
+          //          TEST_LOG("Split hand %d\n", nextHandIndex + 1);
+          game.player.splitHand(nextHandIndex);
+        } else {
+          //          TEST_LOG("Warning: illegal attempt to split hand %d\n", nextHandIndex + 1);
+          //          TEST_LOG("Stand on hand %d\n", nextHandIndex + 1);
+          game.player.stand(nextHandIndex);
+        }
+      }
     }
+    //    game.player.printHands();
+    //    TEST_LOG("\n");
   }
 
   //  TEST_LOG("Dealer hand: ");
@@ -76,16 +86,34 @@ int8_t simulateGame(uint32_t seed) {
 }
 
 // Index is seed
-const int8_t gameResults[] = {-2, -1, -1, -2, -2, -1, 2, -1, -1, 1, 1, -1, -1, -2, 0, -2, -1, 0, -1, -1, -2, -1, -1, -2, -1, 2, 1, 2, 4, 2, -2, -1, 1, 1, 2, -1, 1, -1, -1, 2, -1, -1, 1, -1, -1, -1, -3, -1, 2, -1, -2, -1, 0, -2, -1, 1, -1, 1, -1, -2, -1, 0, 1, -1, -1, -1, -1, -2, -1, -1, 0, -1, 1, -1, -1, 1, -1, -1, -3, -1, 4, -1, -1, -1, 1, -2, -1, -2, -4, -1, 1, 1, -2, -2, -2, -1, 1, -2, 4, 2};
+const int8_t gameResults[] = {1, -1, -1, -1, 0, -1, -1, -1, -1, 1, 1, -1, -2, 2, -1, -1, -2, 0, -1, -1, 1, -1, 2, 0, 1, -1, -1, 1, 1, -1, -1, 1, 2, -1, 1, 0, 1, -2, -1, -1, -1, -1, 0, 1, -1, -1, 1, -1, 1, -1, 1, 1, 0, -1, 0, 1, -1, -1, -1, -1, -1, 0, 1, -1, -1, -2, -1, 1, 1, 1, -1, 0, 2, -1, -1, 1, 1, 1, 1, 1, -1, -1, -1, -1, 2, 1, -1, -1, 1, -1, 1, 2, -1, 0, -1, -1, 1, -1, 1, -1};
 
 int main() {
   TEST_START("blackjack games")
 
   TEST_LOG("Simulating blackjack games\n")
 
+  //  printf("{");
   for (uint8_t i = 0; i < 100; i++) {
     TEST_ASSERT_EQUAL_TO_INT(simulateGame(i), gameResults[i]);
+    //    printf("%d, ", simulateGame(i));
   }
+  //  printf("}\n");
+
+  float winRate = 0;
+  const uint32_t times = 10000;
+  TEST_LOG("Testing win rate with perfect algorithm for %d games\n", times)
+  for (uint32_t i = 0; i < times; i++) {
+    if (simulateGame(i) > 0) {
+      winRate++;
+    }
+    if (i % 1000 == 0) {
+      TEST_LOG("%f%% done\n", (float) i / times * 100)
+    }
+  }
+  winRate /= times;
+  TEST_LOG("Win rate: %f\n", winRate)
+  TEST_ASSERT_LESS_THAN_OR_EQUAL_TO_INT(winRate, 0.5)
 
   TEST_END()
 

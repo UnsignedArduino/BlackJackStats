@@ -1,5 +1,5 @@
 #include "../src/Cards/Hand/CardHand.h"
-#include "helpers.h"
+#include "test_helpers.h"
 #include <cstdio>
 
 int main() {

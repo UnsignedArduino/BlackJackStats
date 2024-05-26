@@ -5,7 +5,7 @@ void printCardAndValue(card_t card) {
   if ((card & CARD_RANK_MASK) == CARD_RANK_ACE) {
     printf("(11 / 1)");
   } else {
-    printf("(%f)", fmin(card & CARD_RANK_MASK, 10));
+    printf("(%f)", min(card & CARD_RANK_MASK, 10));
   }
 }
 
@@ -18,7 +18,7 @@ card_t BlackjackHand::getSoftHandValue() {
       numberOfAces++;
       value += 10;
     }
-    value += fmin(this->hand[i] & CARD_RANK_MASK, 10);
+    value += min(this->hand[i] & CARD_RANK_MASK, 10);
   }
 
   while (value > 21 && numberOfAces > 0) {
@@ -33,7 +33,7 @@ card_t BlackjackHand::getHardHandValue() {
   card_t value = 0;
 
   for (card_hand_index_t i = 0; i < CARDHAND_MAX_SIZE; i++) {
-    value += fmin(this->hand[i] & CARD_RANK_MASK, 10);
+    value += min(this->hand[i] & CARD_RANK_MASK, 10);
   }
 
   return value;
@@ -43,7 +43,7 @@ bool BlackjackHand::canSplit() {
   if (this->getHandSize() != 2) {
     return false;
   }
-  return fmin(this->hand[0] & CARD_RANK_MASK, 10) == fmin(this->hand[1] & CARD_RANK_MASK, 10);
+  return fmin(this->hand[0] & CARD_RANK_MASK, 10) == min(this->hand[1] & CARD_RANK_MASK, 10);
 }
 
 void BlackjackHand::printHand() {

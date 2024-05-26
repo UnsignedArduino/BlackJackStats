@@ -2,6 +2,7 @@
 #define BLACKJACKSTATS_BLACKJACKHAND_H
 
 #include "../../Cards/Hand/CardHand.h"
+#include "../../helpers.h"
 
 void printCardAndValue(card_t card);
 

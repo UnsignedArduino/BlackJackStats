@@ -1,8 +1,8 @@
 #include "../src/Cards/Hand/CardHand.h"
-#include "helpers.h"
+#include "test_helpers.h"
 #include <cstdio>
 
-bool compareArrays(const card_t *a, const card_t *b, const card_hand_index_t size) {
+bool compareArrays(const card_t* a, const card_t* b, const card_hand_index_t size) {
   for (card_hand_index_t i = 0; i < size; i++) {
     if (a[i] != b[i]) {
       return false;

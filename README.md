@@ -30,4 +30,4 @@ Run a `test_*.exe` or `ctest` in the `build` directory.
 ### Writing tests
 
 Check out [`/tests/test_cardhands.cpp`](tests/test_cardhands.cpp) for an example on how to use the horrible testing
-macros I've created. Look in [`/tests/helpers.h`](tests/helpers.h) to see all the available macros.
+macros I've created. Look in [`/tests/test_helpers.h`](tests/test_helpers.h) to see all the available macros.

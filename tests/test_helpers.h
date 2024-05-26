@@ -1,14 +1,14 @@
 #include <cstdint>
 
-#ifndef BLACKJACKSTATS_HELPERS_H
-  #define BLACKJACKSTATS_HELPERS_H
+#ifndef BLACKJACKSTATS_TEST_HELPERS_H
+  #define BLACKJACKSTATS_TEST_HELPERS_H
 
-bool assert(bool condition, const char *test, uint32_t number);
+bool assert(bool condition, const char* test, uint32_t number);
 
   #define TEST_START(name)                 \
     {                                      \
       printf("|- Test suite: " name "\n"); \
-      const char *test_name = name;        \
+      const char* test_name = name;        \
       uint32_t test_counter = 0;
 
   #define TEST_LOG(...) printf("> " __VA_ARGS__);
@@ -122,4 +122,4 @@ bool assert(bool condition, const char *test, uint32_t number);
 
   #define TEST_END_FAIL() printf("\n|- Test suite: %s...failed!\n", test_name);
 
-#endif//BLACKJACKSTATS_HELPERS_H
+#endif //BLACKJACKSTATS_TEST_HELPERS_H
