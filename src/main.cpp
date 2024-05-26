@@ -1,7 +1,6 @@
 #include "Blackjack/Game/BlackjackGame.h"
 #include "Cards/Hand/CardHand.h"
 #include "algorithm.h"
-#include <cmath>
 #include <cstdio>
 #include <random>
 #include <time.h>

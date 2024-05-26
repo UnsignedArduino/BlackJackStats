@@ -68,10 +68,9 @@ int main() {
     fitness(perfect_algorithm_matrix);
     auto end = std::chrono::high_resolution_clock::now();
     auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count();
-    TEST_LOG("Took %lld ms for %d games\n", duration, FITNESS_GAME_SIMS)
     float average = (float) duration / FITNESS_GAME_SIMS;
-    TEST_LOG("Average time per game: %f ms\n", average)
-    TEST_ASSERT_LESS_THAN_OR_EQUAL_TO_INT(average * 100, 50)
+    TEST_LOG("Took %lld ms to score algorithm matrix with %d games (%f ms per game)\n", duration, FITNESS_GAME_SIMS, average)
+    TEST_ASSERT_LESS_THAN_OR_EQUAL_TO_INT(duration, 2000)
   }
 
   TEST_END()
