@@ -48,7 +48,7 @@ int8_t simulateGame(uint32_t seed, blackjack_game_move_t algorithmMatrix[AM_DEAL
   return game.moneyFlow();
 }
 
-int32_t fitness(blackjack_game_move_t algorithmMatrix[AM_DEALERS_SIZE][AM_PLAYERS_SIZE]) {
+int64_t fitness(blackjack_game_move_t algorithmMatrix[AM_DEALERS_SIZE][AM_PLAYERS_SIZE]) {
   printf("Running fitness test on algorithm matrix\n");
   uint32_t wins = 0, draws = 0, losses = 0;
   int32_t moneyFlow = 0;
@@ -66,11 +66,10 @@ int32_t fitness(blackjack_game_move_t algorithmMatrix[AM_DEALERS_SIZE][AM_PLAYER
       printf("%.2f%% finished\n", std::round(((float) seed / FITNESS_GAME_SIMS) * 100));
     }
   }
-  // TODO: Implement fitness function
-  int32_t fitness = 0;
+  int64_t fitness = wins * 2 + draws - losses + moneyFlow;
   printf("%d wins (%.2f%%, %d draws (%.2f%%), %d losses (%.2f%%)\n", wins, (float) wins / FITNESS_GAME_SIMS * 100, draws, (float) draws / FITNESS_GAME_SIMS * 100, losses, (float) losses / FITNESS_GAME_SIMS * 100);
   printf("Money flow: %d\n", moneyFlow);
-  printf("Fitness: %d\n", fitness);
+  printf("Fitness: %lld\n", fitness);
   return fitness;
 }
 
