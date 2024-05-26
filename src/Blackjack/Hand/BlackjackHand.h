@@ -10,14 +10,14 @@ class BlackjackHand : public CardHand {
     BlackjackHand() = default;
     ~BlackjackHand() = default;
 
-    card_t getHandValue();
+    card_t getSoftHandValue();
+    card_t getHardHandValue();
     bool canSplit();
 
-    void
-    printHand() override;
+    void printHand() override;
 
   private:
 };
 
 
-#endif//BLACKJACKSTATS_BLACKJACKHAND_H
+#endif //BLACKJACKSTATS_BLACKJACKHAND_H

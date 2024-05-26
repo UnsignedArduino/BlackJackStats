@@ -26,13 +26,13 @@ blackjack_game_state_t BlackjackGame::gameState() {
 int8_t BlackjackGame::moneyFlow(int8_t hand /* = -1*/) {
   if (hand >= 0 && hand < this->player.getHandCount()) {
     int8_t thisFlow = 0;
-    if (this->player.hands[hand]->getHandValue() > 21) {
+    if (this->player.hands[hand]->getSoftHandValue() > 21) {
       thisFlow = -1;
-    } else if (this->dealerHand.getHandValue() > 21) {
+    } else if (this->dealerHand.getSoftHandValue() > 21) {
       thisFlow = 1;
-    } else if (this->player.hands[hand]->getHandValue() > this->dealerHand.getHandValue()) {
+    } else if (this->player.hands[hand]->getSoftHandValue() > this->dealerHand.getSoftHandValue()) {
       thisFlow = 1;
-    } else if (this->player.hands[hand]->getHandValue() < this->dealerHand.getHandValue()) {
+    } else if (this->player.hands[hand]->getSoftHandValue() < this->dealerHand.getSoftHandValue()) {
       thisFlow = -1;
     }
     if (this->player.handsDoubledDown[hand]) {
@@ -51,7 +51,7 @@ int8_t BlackjackGame::moneyFlow(int8_t hand /* = -1*/) {
 }
 
 void BlackjackGame::dealerHits() {
-  while (this->dealerHand.getHandValue() < 17) {
+  while (this->dealerHand.getSoftHandValue() < 17) {
     this->dealerHand.addCardToBottom(this->deck.drawCardFromTop());
   }
 }

@@ -9,7 +9,7 @@ void printCardAndValue(card_t card) {
   }
 }
 
-card_t BlackjackHand::getHandValue() {
+card_t BlackjackHand::getSoftHandValue() {
   card_t value = 0;
   uint8_t numberOfAces = 0;
 
@@ -29,6 +29,16 @@ card_t BlackjackHand::getHandValue() {
   return value;
 }
 
+card_t BlackjackHand::getHardHandValue() {
+  card_t value = 0;
+
+  for (card_hand_index_t i = 0; i < CARDHAND_MAX_SIZE; i++) {
+    value += fmin(this->hand[i] & CARD_RANK_MASK, 10);
+  }
+
+  return value;
+}
+
 bool BlackjackHand::canSplit() {
   if (this->getHandSize() != 2) {
     return false;
@@ -43,5 +53,9 @@ void BlackjackHand::printHand() {
     }
     printCard(this->hand[i]);
   }
-  printf("(%d)", this->getHandValue());
+  if (this->getSoftHandValue() != this->getHardHandValue()) {
+    printf("(%d / %d)", this->getSoftHandValue(), this->getHardHandValue());
+  } else {
+    printf("(%d)", this->getSoftHandValue());
+  }
 }

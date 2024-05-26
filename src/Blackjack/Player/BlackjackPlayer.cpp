@@ -24,7 +24,13 @@ void BlackjackPlayer::printHands() {
       }
       printCard(this->hands[i]->hand[j]);
     }
-    printf("(%d", this->hands[i]->getHandValue());
+    printf("(%d", this->hands[i]->getSoftHandValue());
+    if (this->hands[i]->getSoftHandValue() != this->hands[i]->getHardHandValue()) {
+      printf(" / %d", this->hands[i]->getHardHandValue());
+    }
+    if (this->handsStood[i]) {
+      printf(" - stood");
+    }
     if (this->handsDoubledDown[i]) {
       printf(" - doubled");
     }
@@ -47,7 +53,7 @@ blackjack_player_action_result_t BlackjackPlayer::hit(uint8_t handIndex, card_t 
   } else if (this->handsDoubledDown[handIndex]) {
     return BLACKJACK_PLAYER_ACTION_RESULT_ALREADY_DOUBLED_DOWN;
   } else if (this->hands[handIndex]->addCardToBottom(card) == CARD_ACTION_RESULT_SUCCESS) {
-    if (this->hands[handIndex]->getHandValue() > 21) {
+    if (this->hands[handIndex]->getSoftHandValue() > 21) {
       this->handsStood[handIndex] = true;
     }
     if (doubleDown) {
@@ -71,7 +77,7 @@ blackjack_player_action_result_t BlackjackPlayer::stand(uint8_t handIndex) {
 
 blackjack_player_game_state_t BlackjackPlayer::gameState() {
   for (uint8_t i = 0; i < PLAYER_SPLITS_MAX; i++) {
-    if (!this->handsStood[i] && (this->hands[i] != nullptr && this->hands[i]->getHandValue() < 21)) {
+    if (!this->handsStood[i] && (this->hands[i] != nullptr && this->hands[i]->getSoftHandValue() < 21)) {
       return BLACKJACK_PLAYER_GAME_STATE_IN_PROGRESS;
     }
   }
@@ -80,7 +86,7 @@ blackjack_player_game_state_t BlackjackPlayer::gameState() {
 
 int8_t BlackjackPlayer::getNextHandIndex() {
   for (uint8_t i = 0; i < PLAYER_SPLITS_MAX; i++) {
-    if (!this->handsStood[i] && this->hands[i] != nullptr && this->hands[i]->getHandValue() < 21) {
+    if (!this->handsStood[i] && this->hands[i] != nullptr && this->hands[i]->getSoftHandValue() < 21) {
       return i;
     }
   }

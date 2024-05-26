@@ -8,7 +8,7 @@ int8_t simulateGame(uint32_t seed) {
 
   //  game.player.printHands();
 
-  //  sum = game.player.hands[0]->getHandValue();
+  //  sum = game.player.hands[0]->getSoftHandValue();
 
   if (game.gameState() == BLACKJACK_GAME_STATE_PLAYER_FINISHED) {
     //    TEST_LOG("Player wins with instant blackjack!\n");

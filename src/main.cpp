@@ -1,5 +1,6 @@
 #include "Blackjack/Game/BlackjackGame.h"
 #include "Cards/Hand/CardHand.h"
+#include "algorithm.h"
 #include <cstdio>
 #include <random>
 
@@ -9,10 +10,11 @@ int8_t simulateGame(uint32_t seed, card_t &sum) {
 
   game.player.printHands();
 
-  sum = game.player.hands[0]->getHandValue();
+  sum = game.player.hands[0]->getSoftHandValue();
 
   if (game.gameState() == BLACKJACK_GAME_STATE_PLAYER_FINISHED) {
-    printf("Player wins with instant blackjack!\n");
+    printf("\nPlayer wins with instant blackjack!\n");
+    printf("Hand 1: WIN (+1)\n");
     return 1;
   }
 
@@ -82,8 +84,10 @@ int main() {
   card_t sum;
   int8_t result;
 
-  result = simulateGame(0, sum);// -2
-  //  result = simulateGame(45, sum);// -1
+  result = simulateGame(0, sum); // -2 with ace
+  //  result = simulateGame(1, sum); // -1
+  //  result = simulateGame(10, sum);  // +1 instant blackjack
+  //  result = simulateGame(45, sum); // -1
   //  result = simulateGame(27, sum);// 2 split +2
   //  result = simulateGame(28, sum);// 4 split +4
   //  result = simulateGame(80, sum);// 2 split +4
