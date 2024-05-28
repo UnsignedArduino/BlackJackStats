@@ -6,7 +6,7 @@
 #include <random>
 #include <time.h>
 
-const uint32_t FITNESS_GAME_SIMS = 10000;
+const uint32_t FITNESS_GAME_SIMS = 5000;
 
 int8_t simulateGame(uint32_t seed, blackjack_game_move_t algorithmMatrix[AM_DEALERS_SIZE][AM_PLAYERS_SIZE]) {
   auto game = BlackjackGame(seed);
@@ -119,7 +119,7 @@ int main() {
   };
   // clang-format on
 
-  const int POPSIZE = 10;
+  const int POPSIZE = 20;
   const int BREEDINGSIZE = 5;
   const float MUTATION_RATE = 0.025;
   blackjack_game_move_t population[POPSIZE][AM_DEALERS_SIZE][AM_PLAYERS_SIZE] = {};
@@ -144,7 +144,7 @@ int main() {
         bestIndex = i;
       }
       totalFitness += population_fitness[i];
-      if (i % 2 == 0)
+      if (i % 5 == 0)
         printf("Simulating: %d\n", i);
     }
     printf("\n");
