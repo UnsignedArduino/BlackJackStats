@@ -35,7 +35,7 @@ blackjack_game_move_t getMoveFromMatrix(blackjack_game_move_t matrix[AM_DEALERS_
 // TODO check to make sure this works
 void printMatrix(blackjack_game_move_t matrix[AM_DEALERS_SIZE][AM_PLAYERS_SIZE]) {
   printf("{\n");
-  printf("// Hard 5-20          Soft A2-A9 Pair AA-TT     Dealer's face up card\n");
+  printf("// Hard 5-20          Soft A2-A9 Pair AA-TT      Dealer's face up card\n");
   for(uint8_t i = 0; i < AM_DEALERS_SIZE; i++) {
     char section[AM_PLAYERS_SIZE];
     strncpy(section, matrix[i], 16);
@@ -46,7 +46,9 @@ void printMatrix(blackjack_game_move_t matrix[AM_DEALERS_SIZE][AM_PLAYERS_SIZE])
     printf(" \"%s\"", section);
     strncpy(section, matrix[i] + 24, 10);
     section[10] = '\0';
-    printf(" \"%s\" // ", section);
+    printf(" \"%s\"", section);
+    printf(i < AM_DEALERS_SIZE - 1 ? "," : " ");
+    printf(" // ");
     if (i == 0) {
       printf("A");
     } else if (i == 10) {
