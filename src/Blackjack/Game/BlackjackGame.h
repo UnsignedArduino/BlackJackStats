@@ -1,5 +1,6 @@
 #ifndef BLACKJACKSTATS_GAME_H
 #define BLACKJACKSTATS_GAME_H
+//#define HITSOFT17
 
 #include "../Player/BlackjackPlayer.h"
 
