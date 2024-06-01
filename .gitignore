@@ -1,6 +1,7 @@
 # Build products
 *.o
 build
+release
 cmake-build-*
 main
 main.exe
